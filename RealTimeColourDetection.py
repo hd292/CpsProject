@@ -73,8 +73,8 @@ def spin_left(delaytime):
     GPIO.output(IN2, GPIO.HIGH)
     GPIO.output(IN3, GPIO.HIGH)
     GPIO.output(IN4, GPIO.LOW)
-    pwm_ENA.ChangeDutyCycle(10)
-    pwm_ENB.ChangeDutyCycle(10)
+    pwm_ENA.ChangeDutyCycle(5)
+    pwm_ENB.ChangeDutyCycle(5)
     time.sleep(delaytime)
 
 def spin_right(delaytime):
@@ -91,8 +91,8 @@ def brake(delaytime):
     GPIO.output(IN2, GPIO.LOW)
     GPIO.output(IN3, GPIO.LOW)
     GPIO.output(IN4, GPIO.LOW)
-    pwm_ENA.ChangeDutyCycle(5)
-    pwm_ENB.ChangeDutyCycle(5)
+    pwm_ENA.ChangeDutyCycle(20)
+    pwm_ENB.ChangeDutyCycle(20)
     time.sleep(delaytime)
 
 time.sleep(2)
@@ -381,30 +381,25 @@ if __name__ == "__main__":
             cv2.imshow('thresh', visualize_fps(thresh2, fps))
             
             print(time)
+            
             if cv2.waitKey(30) == 13 or start == True:
                 start = True
                 distanceFromCar  = Distance_test()
                 if distanceFromCar < 10:
                     brake(0.1)
                     print("collision avoided")
-                    if white_percentage_left>white_percentage_middle and white_percentage_left > white_percentage_right:
-                        print("left")
-                        spin_left(0.01)
-                    elif white_percentage_right > white_percentage_left and white_percentage_right > white_percentage_middle:
-                        print("right")
-                        spin_right(0.01)
-                elif white_percentage_left>70 and white_percentage_middle > 70 and white_percentage_right:
+                elif white_percentage_left>70 and white_percentage_middle > 70 and white_percentage_right > 70:
                     print("stop")
                     brake(0.1)
                 elif white_percentage_left>white_percentage_middle and white_percentage_left > white_percentage_right:
                     print("left")
                     spin_left(0.01)
-                elif white_percentage_middle > white_percentage_left and white_percentage_middle > white_percentage_right:
-                    print("run")                
-                    run(0.1)
                 elif white_percentage_right > white_percentage_left and white_percentage_right > white_percentage_middle:
                     print("right")
                     spin_right(0.01)
+                elif white_percentage_middle > white_percentage_left and white_percentage_middle > white_percentage_right:
+                    print("run")                
+                    run(0.1)
             # ----------------------------------------------------------------------
             # record end time
             end_time = time.time()
